@@ -11,7 +11,6 @@ const EditProfile = ({ profile, getProfile, editName, editUsername, editBio, upd
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [currentField, setCurrentField] = useState('');
   const [fieldValue, setFieldValue] = useState('');
-  console.log(profile);
   useEffect(() => {
     getProfile(loginResponse?.result?.profileId);
     getSettings();
@@ -66,7 +65,6 @@ const EditProfile = ({ profile, getProfile, editName, editUsername, editBio, upd
       <View style={styles.container}>
         <Text style={styles.header}>Edit Profile</Text>
 
-        {/* Name Field */}
         <View style={styles.fieldContainer}>
           <Text style={styles.fieldLabel}>Name</Text>
           <View style={styles.fieldValueContainer}>
@@ -77,7 +75,6 @@ const EditProfile = ({ profile, getProfile, editName, editUsername, editBio, upd
           </View>
         </View>
 
-        {/* Username Field */}
         <View style={styles.fieldContainer}>
           <Text style={styles.fieldLabel}>Username</Text>
           <View style={styles.fieldValueContainer}>

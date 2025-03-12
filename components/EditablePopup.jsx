@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import DatePicker from 'react-native-date-picker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const EditablePopup = ({
   visible,
@@ -14,7 +14,7 @@ const EditablePopup = ({
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const handleDateChange = (selectedDate) => {
+  const handleConfirm = (selectedDate) => {
     setShowDatePicker(false);
     if (selectedDate) {
       setDate(selectedDate);
@@ -23,11 +23,7 @@ const EditablePopup = ({
   };
 
   return (
-    <Modal
-      visible={visible}
-      transparent={true}
-      onRequestClose={onClose}
-    >
+    <Modal visible={visible} transparent={true} onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Edit {fieldName}</Text>
@@ -44,22 +40,17 @@ const EditablePopup = ({
             </Picker>
           ) : fieldName === 'dob' ? (
             <>
-              <TouchableOpacity
-                style={styles.dateInput}
-                onPress={() => setShowDatePicker(true)}
-              >
+              <TouchableOpacity style={styles.dateInput} onPress={() => setShowDatePicker(true)}>
                 <Text>{fieldValue || 'Select Date'}</Text>
               </TouchableOpacity>
-              {showDatePicker && (
-                <DatePicker
-                  modal
-                  open={showDatePicker}
-                  date={date}
-                  mode="date"
-                  onConfirm={handleDateChange}
-                  onCancel={() => setShowDatePicker(false)}
-                />
-              )}
+
+              <DateTimePickerModal
+                isVisible={showDatePicker}
+                mode="date"
+                date={date}
+                onConfirm={handleConfirm}
+                onCancel={() => setShowDatePicker(false)}
+              />
             </>
           ) : (
             <TextInput

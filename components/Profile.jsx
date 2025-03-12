@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, Button } from 'react-native';
 import { connect } from 'react-redux';
-import { getProfile } from '../redux/profilereducer';
+import { getProfile, updateProfilePic } from '../redux/profilereducer';
 import { useNavigate } from 'react-router-native';
 import AppBar from './AppBar';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -11,18 +11,44 @@ import Octicons from '@expo/vector-icons/Octicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import * as ImagePicker from 'expo-image-picker';
 
 const Profile = (props) => {
   const [activeTab, setActiveTab] = useState('Home');
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     props.getProfile(props.loginResponse?.result?.profileId);
   }, []);
 
-  const { username, followersCount, followingCount } = props.profile.result || {};
+  const { username, followersCount, followingCount,profileImg } = props.profile.result || {};
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaType,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+  
+    console.log(result);
+  
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setSelectedImage(result.assets[0].uri);
+    }
+  };
+  
+  const handleImageUpload = () => {
+    if (selectedImage) {
+      props.updateProfilePic(selectedImage); 
+      props.getProfile(props.loginResponse?.result?.profileId);
+      setShowPopup(false);
+    }
+  };
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'Settings':
@@ -89,7 +115,16 @@ const Profile = (props) => {
 
       <View style={styles.container}>
         <View style={styles.profileHeader}>
-          <Image source={{ uri: 'https://picsum.photos/202' }} style={styles.profileImage} />
+          <View style={styles.profileImageContainer}>
+              {profileImg ?
+                <Image source={{ uri: profileImg }} style={styles.profileImage} />
+                :
+                <Image source={{ uri: 'https://picsum.photos/202' }} style={styles.profileImage} />
+                }
+            <TouchableOpacity style={styles.editIcon} onPress={() => setShowPopup(true)}>
+              <MaterialIcons name="edit" size={24} color="#4A64FE" />
+            </TouchableOpacity>
+          </View>
           <Text style={styles.username}>{username}</Text>
           <Text style={styles.bio}>
             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -145,6 +180,25 @@ const Profile = (props) => {
         </View>
 
         {renderTabContent()}
+
+        <Modal
+          visible={showPopup}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => setShowPopup(false)}
+        >
+          <View style={styles.popupContainer}>
+            <View style={styles.popupContent}>
+              <Text style={styles.popupTitle}>Update Profile Picture</Text>
+              <Button title="Choose Image" onPress={pickImage} />
+              {selectedImage && (
+                <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
+              )}
+              <Button title="Upload" onPress={handleImageUpload} />
+              <Button title="Cancel" onPress={() => setShowPopup(false)} />
+            </View>
+          </View>
+        </Modal>
       </View>
     </>
   );
@@ -180,11 +234,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
+  profileImageContainer: {
+    position: 'relative',
+  },
   profileImage: {
     width: 80,
     height: 80,
     borderRadius: 40,
     marginBottom: 8,
+  },
+  editIcon: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 4,
   },
   username: {
     fontSize: 18,
@@ -304,6 +369,29 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
+  popupContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  popupContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    gap:10
+  },
+  popupTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  selectedImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginVertical: 10,
+  },
 });
 
 const mapStateToProps = (state) => ({
@@ -313,6 +401,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getProfile,
+  updateProfilePic,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
