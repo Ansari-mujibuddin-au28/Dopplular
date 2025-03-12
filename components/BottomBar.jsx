@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigate, useLocation } from 'react-router-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const BottomBar = (props,) => {
+const BottomBar = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -25,11 +25,13 @@ const BottomBar = (props,) => {
             style={[styles.tab, isActive && styles.activeTab]}
             onPress={() => navigate(tab.path)}
           >
-            <Ionicons 
-              name={isActive ? tab.activeIcon : tab.icon} 
-              size={24} 
-              color={isActive ? '#007bff' : '#777'} 
-            />
+            <View style={[styles.iconContainer, isActive && styles.activeIconContainer]}>
+              <Ionicons 
+                name={isActive ? tab.activeIcon : tab.icon} 
+                size={isActive ? 28 : 24}
+                color={isActive ? 'white' : '#777'} 
+              />
+            </View>
             <Text style={[styles.text, isActive && styles.activeText]}>{tab.name}</Text>
           </TouchableOpacity>
         );
@@ -44,21 +46,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#ddd',
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: 60,
+    height: 80,
     paddingBottom: 5,
   },
   tab: {
     alignItems: 'center',
     flex: 1,
   },
-  activeTab: {
-    backgroundColor: '#e6f2ff', 
-    borderRadius: 15,
+  iconContainer: {
+    padding: 8,
+  },
+  activeIconContainer: {
+    backgroundColor: '#3F51B5',
+    borderRadius: 50, 
+    marginBottom: 5,
+    marginTop: 3,
   },
   text: {
     fontSize: 12,
@@ -66,9 +71,14 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   activeText: {
-    color: '#007bff',
+    color: '#3F51B5',
     fontWeight: 'bold',
+   
   },
+  activeTab:{
+    borderTopWidth: 1,
+    borderTopColor: '#3F51B5'
+  }
 });
 
 export default BottomBar;

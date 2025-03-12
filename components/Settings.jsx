@@ -1,61 +1,89 @@
 import React from 'react';
-import { View, Text, StyleSheet, Switch } from 'react-native';
-import AppBar from './AppBar';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const Settings = () => {
+const SettingsScreen = () => {
+  const userData = {
+    emailAddress: "Demo1@gmail.com",
+    personalInformation: {
+      "Country/region": "India",
+      "DateOfBirth": "1995-07-07T00:00:00.000Z",
+      "Gender": "Male",
+      "Language": "English"
+    },
+    profileVisibility: true,
+  };
+
+  const handleLogout = () => {
+    console.log("User logged out");
+  };
+
   return (
-    <> 
-    <AppBar title="Alerts" />
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.header}>Settings</Text>
+
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Your Account</Text>
-        <View style={styles.settingItem}>
-          <Text>Personal information</Text>
+        <TouchableOpacity style={styles.item}>
+          <Text style={styles.itemText}>Personal information</Text>
+          <Icon name="chevron-right" size={24} color="#666" />
+        </TouchableOpacity>
+        <View style={styles.item}>
+          <Text style={styles.itemText}>Email address</Text>
+          <View style={styles.itemValueContainer}>
+            <Text style={styles.itemValue}>{userData.emailAddress}</Text>
+            <Icon name="chevron-right" size={24} color="#666" />
+          </View>
         </View>
-        <View style={styles.settingItem}>
-          <Text>Email address</Text>
-          <Text style={styles.email}>Salagalaelya@gmail.com</Text>
-        </View>
-        <View style={styles.settingItem}>
-          <Text>Password</Text>
-          <Text style={styles.changePassword}>Change password</Text>
-        </View>
+        <TouchableOpacity style={styles.item}>
+          <Text style={styles.itemText}>Password</Text>
+          <View style={styles.itemValueContainer}>
+            <Text style={styles.linkText}>Change password</Text>
+            <Icon name="chevron-right" size={24} color="#666" />
+          </View>
+        </TouchableOpacity>
       </View>
+
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>App theme</Text>
-        <View style={styles.settingItem}>
-          <Text>System default</Text>
-          <Switch />
-        </View>
+        <Text style={styles.sectionTitle}>App Theme</Text>
+        <TouchableOpacity style={styles.item}>
+          <Text style={styles.itemText}>System default</Text>
+          <Icon name="chevron-right" size={24} color="#666" />
+        </TouchableOpacity>
       </View>
+
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Profile visibility</Text>
-        <View style={styles.settingItem}>
-          <Text>Share profile</Text>
-          <Switch />
-        </View>
+        <Text style={styles.sectionTitle}>Profile Visibility</Text>
+        <TouchableOpacity style={styles.item}>
+          <Text style={styles.itemText}>Share profile</Text>
+          <Icon name="chevron-right" size={24} color="#666" />
+        </TouchableOpacity>
       </View>
+
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Invite</Text>
-        <View style={styles.settingItem}>
-          <Text>Invite friends</Text>
-        </View>
+        <TouchableOpacity style={styles.item}>
+          <Text style={styles.itemText}>Invite friends</Text>
+          <Icon name="chevron-right" size={24} color="#666" />
+        </TouchableOpacity>
       </View>
+
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Support</Text>
-        <View style={styles.settingItem}>
-          <Text>Terms of use</Text>
-        </View>
-        <View style={styles.settingItem}>
-          <Text>Privacy policy</Text>
-        </View>
+        <TouchableOpacity style={styles.item} onPress={() => Linking.openURL('https://example.com/terms')}>
+          <Text style={styles.itemText}>Terms of use</Text>
+          <Icon name="chevron-right" size={24} color="#666" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.item} onPress={() => Linking.openURL('https://example.com/privacy')}>
+          <Text style={styles.itemText}>Privacy policy</Text>
+          <Icon name="chevron-right" size={24} color="#666" />
+        </TouchableOpacity>
       </View>
-      <View style={styles.section}>
-        <Text style={styles.logout}>Log out</Text>
-      </View>
-    </View>
-    </>
+
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutButtonText}>Log out</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 
@@ -68,33 +96,55 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 24,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontWeight: '600',
+    marginBottom: 16,
+    color: '#333',
   },
-  settingItem: {
+  item: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
   },
-  email: {
+  itemText: {
+    fontSize: 16,
+    color: '#333',
+  },
+  itemValueContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemValue: {
+    fontSize: 16,
     color: '#666',
+    marginRight: 8,
   },
-  changePassword: {
-    color: '#007BFF',
+  linkText: {
+    fontSize: 16,
+    color: '#007bff',
+    marginRight: 8,
   },
-  logout: {
-    color: '#FF0000',
-    textAlign: 'center',
-    marginTop: 20,
+  logoutButton: {
+    marginTop: 24,
+    padding: 16,
+    backgroundColor: '#dc3545',
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  logoutButtonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: '600',
   },
 });
 
-export default Settings;
+export default SettingsScreen;

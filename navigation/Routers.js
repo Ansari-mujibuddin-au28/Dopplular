@@ -12,6 +12,7 @@ import Chat from '../components/Chat';
 import Profile from '../components/Profile';
 import Alerts from '../components/Alerts';
 import EditProfile from '../components/EditProfile';
+import Settings from '../components/Settings';
 
 
 const Routers = () => {
@@ -75,6 +76,8 @@ const Routers = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/edit" element={<EditProfile />} />
+            <Route path="/setting" element={<Settings />} />
+            
           </>
         ) : (
           <>

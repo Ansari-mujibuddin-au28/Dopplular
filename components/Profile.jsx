@@ -24,7 +24,7 @@ const Profile = (props) => {
     props.getProfile(props.loginResponse?.result?.profileId);
   }, []);
 
-  const { username, followersCount, followingCount,profileImg } = props.profile.result || {};
+  const { username, followersCount, followingCount,profileImg,bio } = props.profile.result || {};
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -107,7 +107,7 @@ const Profile = (props) => {
           <TouchableOpacity style={styles.iconButton}>
           <Feather name="bookmark" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity  onPress={() => navigate('/setting')} style={styles.iconButton}>
           <Feather name="settings" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -127,7 +127,7 @@ const Profile = (props) => {
           </View>
           <Text style={styles.username}>{username}</Text>
           <Text style={styles.bio}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+           {bio}
           </Text>
         </View>
 
@@ -189,13 +189,20 @@ const Profile = (props) => {
         >
           <View style={styles.popupContainer}>
             <View style={styles.popupContent}>
+                <TouchableOpacity onPress={() => {setShowPopup(false)}} style={{ alignSelf: 'flex-end' }}>
+                    <View style={{ backgroundColor: '#F7F7F7', borderRadius: 50, padding: 6 }}>
+                      <AntDesign name="close" size={14} color="#000" />
+                    </View>
+                </TouchableOpacity>
               <Text style={styles.popupTitle}>Update Profile Picture</Text>
-              <Button title="Choose Image" onPress={pickImage} />
+              <Button style={{ backgroundColor: '#007BFF',}} title="Choose Image" onPress={pickImage} />
               {selectedImage && (
+                <View style={{ alignItems: 'center' }}>
+                <Text style={{ fontSize: 16, color: '#333', marginTop: 10 }}>Selected Image</Text>
                 <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
+                <Button style={{ backgroundColor: '#007BFF',}} title="Upload" onPress={handleImageUpload} />
+                </View>
               )}
-              <Button title="Upload" onPress={handleImageUpload} />
-              <Button title="Cancel" onPress={() => setShowPopup(false)} />
             </View>
           </View>
         </Modal>
@@ -397,6 +404,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   loginResponse: state.login?.loginResponseData || {},
   profile: state.profile?.profile || {},
+  settings: state.settings?.settings || {},
 });
 
 const mapDispatchToProps = {

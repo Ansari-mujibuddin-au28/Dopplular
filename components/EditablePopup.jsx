@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 const EditablePopup = ({
   visible,
@@ -26,6 +27,11 @@ const EditablePopup = ({
     <Modal visible={visible} transparent={true} onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
+        <TouchableOpacity onPress={() => {onClose()}} style={{ alignSelf: 'flex-end' }}>
+                    <View style={{ backgroundColor: '#F7F7F7', borderRadius: 50, padding: 6 }}>
+                      <AntDesign name="close" size={14} color="#000" />
+                    </View>
+        </TouchableOpacity>
           <Text style={styles.modalTitle}>Edit {fieldName}</Text>
 
           {fieldName === 'gender' ? (
@@ -79,15 +85,16 @@ const EditablePopup = ({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: '80%',
+    width: '100%',
     padding: 20,
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   modalTitle: {
     fontSize: 18,
@@ -121,6 +128,8 @@ const styles = StyleSheet.create({
   cancelButton: {
     padding: 10,
     marginRight: 10,
+    backgroundColor: '#007BFF',
+    borderRadius: 5,
   },
   saveButton: {
     padding: 10,
