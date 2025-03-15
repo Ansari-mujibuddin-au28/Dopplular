@@ -7,7 +7,9 @@ const initialState = {
     password: '',
     appTheme: {},
     profileVisibility: false,
-    shareProfile: []
+    shareProfile: [],
+    Invite: [],
+    Support: [],
   },
   updateResponse: '',
   logoutResponse: '',
@@ -30,6 +32,8 @@ export const getSettings = () => async (dispatch) => {
       const appTheme = yourAccount.find((item) => item.AppTheme)?.AppTheme || {};
       const profileVisibility = yourAccount.find((item) => item["Profile Visibility"])?.["Profile Visibility"] || false;
       const shareProfile = yourAccount.find((item) => item["Share Profile"])?.["Share Profile"] || [];
+      const Invite = response.Invite || '';
+      const Support= response.Support || [];    
 
       dispatch({
         type: GET_SETTINGS,
@@ -39,7 +43,9 @@ export const getSettings = () => async (dispatch) => {
           password,
           appTheme,
           profileVisibility,
-          shareProfile
+          shareProfile,
+          Invite,
+          Support
         },
       });
     }

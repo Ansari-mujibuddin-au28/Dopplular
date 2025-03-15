@@ -13,6 +13,9 @@ import Profile from '../components/Profile';
 import Alerts from '../components/Alerts';
 import EditProfile from '../components/EditProfile';
 import Settings from '../components/Settings';
+import PersonalInfo from '../components/PersonalInfo';
+import EmailEdit from '../components/EmailEdit';
+import ChangePassword from '../components/ChangePassword';
 
 
 const Routers = () => {
@@ -77,6 +80,9 @@ const Routers = () => {
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/edit" element={<EditProfile />} />
             <Route path="/setting" element={<Settings />} />
+            <Route path="/personal-info" element={<PersonalInfo />} />
+            <Route path="/email-edit" element={<EmailEdit />} />
+            <Route path="/change-password" element={<ChangePassword />} />
             
           </>
         ) : (
