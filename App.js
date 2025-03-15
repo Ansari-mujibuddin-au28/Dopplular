@@ -38,16 +38,10 @@ const MainLayout = () => {
   const [hideBottomBar, setHideBottomBar] = useState(false);
 
   useEffect(() => {
-    
     const path = location.pathname.toLowerCase();
-  
-    if (path === '/' || path.startsWith('/walkthrough')) {
-      setHideBottomBar(true);
-    } else {
-      setHideBottomBar(false);
-    }
+    const allowedPaths = ["/home", "/trending", "/chat", "/profile", "/alerts"];
+    setHideBottomBar(!allowedPaths.includes(path));
   }, [location.pathname]);
-  
 
   return (
     <View style={styles.container}>
