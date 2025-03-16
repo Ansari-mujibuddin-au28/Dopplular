@@ -1,9 +1,9 @@
 import React, { useEffect,useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity,Modal } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity,Modal,Switch  } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AppBar from './AppBar';
 import { connect } from 'react-redux';
-import { getSettings } from '../redux/settingsreducer';
+import { getSettings,updateTheme,updateProfileVisibility } from '../redux/settingsreducer';
 import { useNavigate } from 'react-router-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
@@ -20,11 +20,13 @@ const SettingsScreen = (props) => {
   }, []);
 
   const handleThemeSelection = (theme) => {
+    updateTheme(theme);
     setSelectedTheme(theme);
     setThemeModalVisible(false);
   };
 
   const toggleProfileVisibility = () => {
+    updateProfileVisibility(isProfileVisible);
     setIsProfileVisible(!isProfileVisible);
     setProfileModalVisible(false);
   };
@@ -71,6 +73,7 @@ const SettingsScreen = (props) => {
               <Icon name="chevron-right" size={24} color="#666" />
             </View>
           </TouchableOpacity>
+         
              <TouchableOpacity style={styles.item} onPress={() => setThemeModalVisible(true)}>
             <Text style={styles.itemText}>{getCapitalizedKey(3)}</Text>
             <View style={styles.itemValueContainer}>
@@ -85,7 +88,7 @@ const SettingsScreen = (props) => {
               <Icon name="chevron-right" size={24} color="#666" />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.item}>
+          <TouchableOpacity  onPress={() => navigate('/share-profile')} style={styles.item}>
             <Text style={styles.itemText}>{getCapitalizedKey(5)}</Text>
             <Icon name="chevron-right" size={24} color="#666" />
           </TouchableOpacity>
@@ -144,18 +147,34 @@ const SettingsScreen = (props) => {
         </View>
       </Modal>
 
+       <Modal visible={themeModalVisible} transparent animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <TouchableOpacity onPress={() => setThemeModalVisible(false)} style={styles.closeIcon}>
+              <AntDesign name="close" size={20} color="#000" />
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>Select App Theme</Text>
+            {["Light Mode", "Dark Mode", "System Default"].map((theme, index) => (
+              <TouchableOpacity key={index} style={styles.radioOption} onPress={() => handleThemeSelection(theme)}>
+                <Text style={styles.radioText}>{theme}</Text>
+                <Icon name={selectedTheme === theme ? "radio-button-checked" : "radio-button-unchecked"} size={20} color="blue" />
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </Modal>
+
       <Modal visible={profileModalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-          <TouchableOpacity  onPress={() => setProfileModalVisible(false)}style={{ alignSelf: 'flex-end' }}>
-                    <View style={{ backgroundColor: '#F7F7F7', borderRadius: 50, padding: 6 }}>
-                      <AntDesign name="close" size={14} color="#000" />
-                    </View>
-        </TouchableOpacity>
-            <Text style={styles.modalTitle}>Profile Visibility</Text>
-            <TouchableOpacity style={styles.modalOption} onPress={toggleProfileVisibility}>
-              <Text style={styles.modalOptionText}>{isProfileVisible ? "Disable Visibility" : "Enable Visibility"}</Text>
+            <TouchableOpacity onPress={() => setProfileModalVisible(false)} style={styles.closeIcon}>
+              <AntDesign name="close" size={20} color="#000" />
             </TouchableOpacity>
+            <Text style={styles.modalTitle}>Profile Visibility</Text>
+            <View style={styles.switchContainer}>
+              <Text style={styles.switchText}>{isProfileVisible ? "Visible" : "Hidden"}</Text>
+              <Switch value={isProfileVisible} onValueChange={toggleProfileVisibility} />
+            </View>
           </View>
         </View>
       </Modal>
@@ -255,6 +274,33 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: 'blue',
     fontSize: 16,
+  },
+  closeIcon: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#F7F7F7',
+    borderRadius: 50,
+    padding: 6,
+  },
+  radioOption: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  radioText: {
+    fontSize: 16,
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  switchText: {
+    fontSize: 16,
+    color: '#212121',
   },
 });
 

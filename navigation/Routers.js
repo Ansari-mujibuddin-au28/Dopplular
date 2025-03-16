@@ -16,6 +16,7 @@ import Settings from '../components/Settings';
 import PersonalInfo from '../components/PersonalInfo';
 import EmailEdit from '../components/EmailEdit';
 import ChangePassword from '../components/ChangePassword';
+import ShareProfile from '../components/ShareProfile';
 
 
 const Routers = () => {
@@ -83,6 +84,7 @@ const Routers = () => {
             <Route path="/personal-info" element={<PersonalInfo />} />
             <Route path="/email-edit" element={<EmailEdit />} />
             <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/share-profile" element={<ShareProfile />} />
             
           </>
         ) : (
