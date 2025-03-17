@@ -153,7 +153,7 @@ const Profile = (props) => {
             onPress={() => navigate('/edit')}>
             <Text style={styles.editButtonText}>Edit profile</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.shareButton}>
+          <TouchableOpacity  onPress={() => navigate('/scan-and-share')} style={styles.shareButton}>
             <MaterialCommunityIcons name="share-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>

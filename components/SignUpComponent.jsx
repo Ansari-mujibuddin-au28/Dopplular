@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-native';
 import { postSignUp } from '../redux/signupreducer';
@@ -13,13 +13,16 @@ const SignUpComponent = ({ signupId, postSignUp }) => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   
   const navigate = useNavigate();
 
   useEffect(() => {
     if (signupId && signupId.success) {
+      setIsLoading(false);
       navigate('/walkthrough/login');
     } else if (signupId?.message) {
+      setIsLoading(false);
       setErrorMessage(signupId.message);
     }
   }, [signupId, navigate]);
@@ -40,6 +43,7 @@ const SignUpComponent = ({ signupId, postSignUp }) => {
     setErrors({});
     setErrorMessage('');
     const signupData = { email, fullname, password, number };
+    setIsLoading(true);
 
     try {
       await postSignUp(signupData);
@@ -104,7 +108,12 @@ const SignUpComponent = ({ signupId, postSignUp }) => {
             {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
 
             <TouchableOpacity style={styles.button} onPress={handleSignup}>
-              <Text style={styles.buttonText}>Signup</Text>
+               {isLoading ? 
+               (
+                  <ActivityIndicator size="small" color="#ffffff" />
+              )  : (
+                  <Text style={styles.buttonText}>Signup</Text>
+                  )}
             </TouchableOpacity>
           </>
         )}

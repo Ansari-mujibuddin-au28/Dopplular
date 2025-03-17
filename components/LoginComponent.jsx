@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,ActivityIndicator  } from 'react-native';
 import { connect } from 'react-redux';
 import { useNavigate } from "react-router-native";
 import { postLogin, getOTP, verifyOTP, resetPassword } from '../redux/loginreducer';
@@ -13,13 +13,16 @@ const LoginComponent = ({ loginResponse, postLogin, getOTP, verifyOTP, resetPass
   const [view, setView] = useState('login');
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   
   const navigate = useNavigate();
 
   useEffect(() => {
     if (loginResponse?.success) {
+      setIsLoading(false);
       navigate('/home', { replace: true }); 
     } else if (loginResponse?.message) {
+      setIsLoading(false);
       setErrorMessage(loginResponse.message);
     }
   }, [loginResponse]);
@@ -30,6 +33,7 @@ const LoginComponent = ({ loginResponse, postLogin, getOTP, verifyOTP, resetPass
 
     setErrors({});
     setErrorMessage('');
+    setIsLoading(true);
     await postLogin({ email, password });
   };
 
@@ -66,7 +70,13 @@ const LoginComponent = ({ loginResponse, postLogin, getOTP, verifyOTP, resetPass
               <TouchableOpacity onPress={() => setView('forgotPassword')} ><Text style={[styles.buttonText,{color:"#3f51b5"}]}>Forgot Password</Text></TouchableOpacity>
               <TouchableOpacity onPress={() => setView('resetPassword')} ><Text style={[styles.buttonText,{color:"#3f51b5"}]}>Reset Password</Text></TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.button} onPress={handleLogin}><Text style={styles.buttonText}>Login</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isLoading}>
+              {isLoading ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
+                <Text style={styles.buttonText}>Login</Text>
+              )}
+            </TouchableOpacity>
           </>
         )}
 

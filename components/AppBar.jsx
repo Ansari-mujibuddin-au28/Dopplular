@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigate } from 'react-router-native';
+import { AntDesign } from "@expo/vector-icons";
 
 const AppBar = ({ title }) => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const AppBar = ({ title }) => {
   return (
     <View style={styles.appBar}>
       <TouchableOpacity onPress={() => navigate(-1)} style={styles.backButton}>
-        <Text style={styles.backText}>←</Text>
+       <AntDesign name="arrowleft" size={24} color="white" />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.rightSpace} />
