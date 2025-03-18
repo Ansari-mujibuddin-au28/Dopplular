@@ -10,23 +10,25 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 const SettingsScreen = (props) => {
 
   const navigate = useNavigate();
+  const {theme } = props.profile.result.user || {};
   const [themeModalVisible, setThemeModalVisible] = useState(false);
   const [profileModalVisible, setProfileModalVisible] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState("System Default");
+  const [selectedTheme, setSelectedTheme] = useState(theme || "System Default");
   const [isProfileVisible, setIsProfileVisible] = useState(true);
+  
 
   useEffect(() => {
     props.getSettings();
   }, []);
 
   const handleThemeSelection = (theme) => {
-    updateTheme(theme);
+    props.updateTheme(theme);
     setSelectedTheme(theme);
     setThemeModalVisible(false);
   };
 
   const toggleProfileVisibility = () => {
-    updateProfileVisibility(isProfileVisible);
+    props.updateProfileVisibility(isProfileVisible);
     setIsProfileVisible(!isProfileVisible);
     setProfileModalVisible(false);
   };
@@ -306,10 +308,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   settings: state.settings?.settings || {},
+  profile: state.profile?.profile || {},
 });
 
 const mapDispatchToProps = {
   getSettings,
+  updateTheme,
+  updateProfileVisibility
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);

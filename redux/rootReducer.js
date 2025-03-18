@@ -5,6 +5,9 @@ import signupreducer from './signupreducer';
 import postLoginReduser from "./loginreducer";
 import profileReducer from "./profilereducer";
 import SettingsReducer from "./settingsreducer";
+import alertsReducer from "./alertReducer";
+import postPageReducer from "./postPageReducer";
+import likesCommentPageReducer from "./likesCommentPageReducer";
 
 const rootReducer = combineReducers({
     splash:splashReduser, 
@@ -13,6 +16,9 @@ const rootReducer = combineReducers({
     login: postLoginReduser,
     profile: profileReducer,
     settings: SettingsReducer,
+    alerts: alertsReducer,
+    posts: postPageReducer,
+    likesComments: likesCommentPageReducer,
 });
 
 export default rootReducer;
