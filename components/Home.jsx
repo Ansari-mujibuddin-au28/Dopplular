@@ -55,7 +55,11 @@ const HomeScreen = () => {
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <View style={styles.userInfo}>
-        <View style={styles.avatar} />
+      <Image 
+              source={{ uri: "https://picsum.photos/506/506"}} 
+              style={{width:40,height:40,borderRadius:50, marginRight:10}} 
+              resizeMode="cover"
+            />
         <View style={styles.userText}>
           <Text style={styles.username}>{item.username}</Text>
           <Text style={styles.handle}>{item.handle}</Text>
@@ -121,8 +125,15 @@ const HomeScreen = () => {
       </View>
       
       <View style={styles.promoCard}>
+        <View>
         <Text style={styles.promoText}>Find look - alike</Text>
         <Text style={styles.promoSubText}>Discover people who look like you.</Text>
+        </View>
+        <Image 
+              source={require('../assets/rb_29901.png')} 
+              style={{width:60,height:60}} 
+              resizeMode="cover"
+            />
       </View>
       
       <FlatList
@@ -161,6 +172,8 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 10,
     marginBottom: 10,
+    flexDirection:'row',
+    justifyContent:'space-between'
   },
   promoText: {
     fontSize: 18,
