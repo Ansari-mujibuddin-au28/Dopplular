@@ -1,5 +1,6 @@
 import apiClient from '../api/apiClient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { persistor } from './store';
 
 const initialState = {
     loginResponseData:{},
@@ -12,6 +13,24 @@ const POST_LOGIN = 'login/POST_LOGIN';
 const POST_GET_OTP = 'login/POST_GET_OTP';
 const POST_VERIFY_OTP = 'login/POST_VERIFY_OTP';
 const POST_RESET_PASSWORD = 'login/POST_RESET_PASSWORD';
+const LOGOUT = 'login/LOGOUT';
+
+export const logout = () => async (dispatch) => {
+  try {
+    await AsyncStorage.clear(); // Clear AsyncStorage
+    await persistor.purge(); // Purge persisted Redux state
+    await persistor.flush(); // Ensure purge completes
+
+    dispatch({
+      type: LOGOUT,
+    });
+
+    console.log('User logged out successfully');
+  } catch (error) {
+    console.error('LOGOUT Error:', error);
+  }
+};
+
 
 export const postLogin = (loginData) => async (dispatch) => {
   try {
@@ -104,11 +123,20 @@ const postLoginReduser = (state = initialState, action) => {
           resetResponse: action.payload 
         }
       }
+          case LOGOUT:
+          return {
+            ...state,
+            loginResponseData: null,
+            otpResponse: null,
+            verifyResponse: null,
+            resetResponse: null,
+          };
       case "persist/REHYDRATE":
         return {
           ...state,
           loginResponseData: action.payload?.login?.loginResponseData || {},
         };
+  
   
       default: return state;
   }

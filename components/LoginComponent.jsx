@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,ActivityIndicator,Image  } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,ActivityIndicator,Image,ScrollView  } from 'react-native';
 import { connect } from 'react-redux';
 import { useNavigate } from "react-router-native";
 import { postLogin, getOTP, verifyOTP, resetPassword } from '../redux/loginreducer';
@@ -61,7 +61,7 @@ const LoginComponent = ({ loginResponse, postLogin, getOTP, verifyOTP, resetPass
       <AppBar title="Login" />
       <View style={styles.container}>
         {view === 'login' && (
-          <>
+          <ScrollView>
            <Image
               source={require('../assets/Headingcontent.png')}
               style={styles.image}
@@ -83,7 +83,7 @@ const LoginComponent = ({ loginResponse, postLogin, getOTP, verifyOTP, resetPass
                 <Text style={styles.buttonText}>Login</Text>
               )}
             </TouchableOpacity>
-          </>
+          </ScrollView>
         )}
 
         {view === 'forgotPassword' && (

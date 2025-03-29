@@ -1,22 +1,16 @@
 import React, { useEffect,useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity,Modal,Switch  } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity,Modal,Switch,ActivityIndicator  } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AppBar from './AppBar';
 import { connect } from 'react-redux';
 import { getSettings,updateTheme,updateProfileVisibility } from '../redux/settingsreducer';
+import { logout } from '../redux/loginreducer';
 import { useNavigate } from 'react-router-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingsScreen = (props) => {
 
-  const logout = async () => {
-    try {
-      await AsyncStorage.clear();
-    } catch (error) {
-      console.error('Error during logout:', error);
-    }
-  };
 
   const navigate = useNavigate();
   const {theme } = props.profile.result.user || {};
@@ -24,9 +18,24 @@ const SettingsScreen = (props) => {
   const [profileModalVisible, setProfileModalVisible] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState(theme || "System Default");
   const [isProfileVisible, setIsProfileVisible] = useState(true);
+  const [isTimeOut, setIsTimeOut] = useState(false);
 
   useEffect(() => {
     props.getSettings();
+
+    const checkAuth = async () => {
+      try {
+        const token = await AsyncStorage.getItem('authToken');
+        await new Promise(resolve => setTimeout(resolve, 0.5));
+        if (token == null) {
+          navigate('/walkthrough');
+        }
+      } catch (error) {
+        console.error('Error retrieving token:', error);
+        setIsAuthenticated(false);
+      }
+    };
+    checkAuth();
   }, []);
 
   const handleThemeSelection = (theme) => {
@@ -45,9 +54,12 @@ const SettingsScreen = (props) => {
   const email = settings?.emailAddress || 'N/A';
 
   const handleLogout = () => {
-    console.log("User logged out");
-    logout()
-    navigate('/walkthrough')
+    props.logout();
+    setIsTimeOut(true)
+    setTimeout(async () => {
+      navigate('/walkthrough');
+      setIsTimeOut(false)
+    }, 1000);    
   };
 
   const capitalizeFirstLetter = (string) => {
@@ -135,7 +147,8 @@ const SettingsScreen = (props) => {
         </View>
 
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutButtonText}>Log out</Text>
+          {isTimeOut ?  <ActivityIndicator size="small" color="#ffffff" /> :
+          <Text style={styles.logoutButtonText}>Log out</Text>}
         </TouchableOpacity>
       </ScrollView>
 
@@ -319,12 +332,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   settings: state.settings?.settings || {},
   profile: state.profile?.profile || {},
+  loginResponse: state.login?.loginResponseData || {},
 });
 
 const mapDispatchToProps = {
   getSettings,
   updateTheme,
-  updateProfileVisibility
+  updateProfileVisibility,
+  logout,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
