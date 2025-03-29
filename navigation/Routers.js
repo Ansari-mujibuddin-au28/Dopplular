@@ -18,6 +18,7 @@ import EmailEdit from '../components/EmailEdit';
 import ChangePassword from '../components/ChangePassword';
 import ShareProfile from '../components/ShareProfile';
 import ScanAndShare from '../components/ScanAndShare';
+import InviteAndConnectComponent from '../components/InviteAndConnectComponent'
 
 
 const Routers = () => {
@@ -75,6 +76,9 @@ const Routers = () => {
         {isAuthenticated ? (
           <>
             <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/walkthrough" element={<WalkthroughScreen />} />
+            <Route path="/walkthrough/login" element={<LoginComponent />} />
+            <Route path="/walkthrough/signup" element={<SignUpComponent />} />
             <Route path="/home" element={<Home />} />
             <Route path="/trending" element={<Trending />} />
             <Route path="/chat" element={<Chat />} />
@@ -87,6 +91,7 @@ const Routers = () => {
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/share-profile" element={<ShareProfile />} />
             <Route path="/scan-and-share" element={<ScanAndShare />} />
+            <Route path="/invite-connect" element={<InviteAndConnectComponent />} />
             
           </>
         ) : (
@@ -100,6 +105,14 @@ const Routers = () => {
             <Route path="/chat" element={<Chat />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/alerts" element={<Alerts />} />
+            <Route path="/edit" element={<EditProfile />} />
+            <Route path="/setting" element={<Settings />} />
+            <Route path="/personal-info" element={<PersonalInfo />} />
+            <Route path="/email-edit" element={<EmailEdit />} />
+            <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/share-profile" element={<ShareProfile />} />
+            <Route path="/scan-and-share" element={<ScanAndShare />} />
+            <Route path="/invite-connect" element={<InviteAndConnectComponent />} />
           </>
         )}
       </Routes>

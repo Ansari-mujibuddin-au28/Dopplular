@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,ActivityIndicator,Image } from 'react-native';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-native';
 import { postSignUp } from '../redux/signupreducer';
@@ -56,7 +56,11 @@ const SignUpComponent = ({ signupId, postSignUp }) => {
     <> 
       <AppBar title="SignUp" />
       <View style={styles.container}>
-        <Text style={styles.title}>Create Your Doppular Account</Text>
+          <Image
+                      source={require('../assets/Headingcontent(1).png')}
+                      style={styles.image}
+                      resizeMode="contain"
+                    />
         
         {errorMessage ? (
           <View style={styles.errorContainer}>
@@ -184,6 +188,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  image:{width:"100%",height:170}
 });
 
 const mapStateToProps = (state) => ({

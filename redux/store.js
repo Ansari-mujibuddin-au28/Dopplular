@@ -4,13 +4,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import rootReducer from './rootReducer';
 import { createTransform } from 'redux-persist';
 
-// Fix: Ensure correct transformation
 const nonSerializableTransform = createTransform(
   (inboundState) => inboundState,
   (outboundState) => outboundState
 );
 
-// Fix: Ensure reducer names in whitelist are correct
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
@@ -19,7 +17,6 @@ const persistConfig = {
   debug: true, 
 };
 
-// Fix: Ensure persistReducer is used correctly
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,ActivityIndicator  } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,ActivityIndicator,Image  } from 'react-native';
 import { connect } from 'react-redux';
 import { useNavigate } from "react-router-native";
 import { postLogin, getOTP, verifyOTP, resetPassword } from '../redux/loginreducer';
@@ -62,9 +62,15 @@ const LoginComponent = ({ loginResponse, postLogin, getOTP, verifyOTP, resetPass
       <View style={styles.container}>
         {view === 'login' && (
           <>
-            <Text style={styles.title}>Welcome to Doppular</Text>
+           <Image
+              source={require('../assets/Headingcontent.png')}
+              style={styles.image}
+              resizeMode="contain"
+            />
             <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} />
+            {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
             <TextInput style={styles.input} placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
+            {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
             {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={() => setView('forgotPassword')} ><Text style={[styles.buttonText,{color:"#3f51b5"}]}>Forgot Password</Text></TouchableOpacity>
@@ -122,7 +128,8 @@ const styles = StyleSheet.create({
   smallButton: { flex: 1, height: 40, backgroundColor: '#3f51b5', justifyContent: 'center', alignItems: 'center', borderRadius: 5, marginHorizontal: 5 },
   buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
   errorText: { color: 'red', fontSize: 14, marginBottom: 10 },
-  successText: { color: 'green', fontSize: 16, marginBottom: 10 }
+  successText: { color: 'green', fontSize: 16, marginBottom: 10 },
+  image:{width:"100%",height:200}
 });
 
 const mapStateToProps = (state) => ({

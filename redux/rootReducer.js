@@ -8,6 +8,7 @@ import SettingsReducer from "./settingsreducer";
 import alertsReducer from "./alertReducer";
 import postPageReducer from "./postPageReducer";
 import likesCommentPageReducer from "./likesCommentPageReducer";
+import chatReducer from "./chatReducer"
 
 const rootReducer = combineReducers({
     splash:splashReduser, 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     alerts: alertsReducer,
     posts: postPageReducer,
     likesComments: likesCommentPageReducer,
+    chat: chatReducer
 });
 
 export default rootReducer;

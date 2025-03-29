@@ -6,8 +6,17 @@ import { connect } from 'react-redux';
 import { getSettings,updateTheme,updateProfileVisibility } from '../redux/settingsreducer';
 import { useNavigate } from 'react-router-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingsScreen = (props) => {
+
+  const logout = async () => {
+    try {
+      await AsyncStorage.clear();
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
 
   const navigate = useNavigate();
   const {theme } = props.profile.result.user || {};
@@ -15,7 +24,6 @@ const SettingsScreen = (props) => {
   const [profileModalVisible, setProfileModalVisible] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState(theme || "System Default");
   const [isProfileVisible, setIsProfileVisible] = useState(true);
-  
 
   useEffect(() => {
     props.getSettings();
@@ -38,6 +46,8 @@ const SettingsScreen = (props) => {
 
   const handleLogout = () => {
     console.log("User logged out");
+    logout()
+    navigate('/walkthrough')
   };
 
   const capitalizeFirstLetter = (string) => {
@@ -99,7 +109,7 @@ const SettingsScreen = (props) => {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{getCapitalizedKey(6)}</Text>
-          <TouchableOpacity style={styles.item}>
+          <TouchableOpacity onPress={() => navigate('/invite-connect')}  style={styles.item}>
             <Text style={styles.itemText}>Invite friends</Text>
             <Icon name="chevron-right" size={24} color="#666" />
           </TouchableOpacity>

@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   nextButton: {
-    backgroundColor: '#fcb900',
+    backgroundColor: '#FFD54F',
     paddingVertical: 12,
     borderRadius: 5,
     marginTop: 30,
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 30,
     width: 280,
-    borderColor: '#fcb900',
+    borderColor: '#FFD54F',
     borderWidth: 1,
   },
   nextButtonText: {
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   nextButtonText2: {
-    color: '#fcb900',
+    color: '#FFD54F',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   activeDot: {
-    backgroundColor: '#fcb900',
+    backgroundColor: '#FFD54F',
   },
   loaderContainer: {
     flex: 1,
