@@ -18,7 +18,8 @@ import EmailEdit from '../components/EmailEdit';
 import ChangePassword from '../components/ChangePassword';
 import ShareProfile from '../components/ShareProfile';
 import ScanAndShare from '../components/ScanAndShare';
-import InviteAndConnectComponent from '../components/InviteAndConnectComponent'
+import InviteAndConnectComponent from '../components/InviteAndConnectComponent';
+import SearchScreen from '../components/SearchScreen';
 
 
 const Routers = () => {
@@ -82,7 +83,7 @@ const Routers = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/trending" element={<Trending />} />
             <Route path="/chat" element={<Chat />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:userId?" element={<Profile />} />
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/edit" element={<EditProfile />} />
             <Route path="/setting" element={<Settings />} />
@@ -92,6 +93,7 @@ const Routers = () => {
             <Route path="/share-profile" element={<ShareProfile />} />
             <Route path="/scan-and-share" element={<ScanAndShare />} />
             <Route path="/invite-connect" element={<InviteAndConnectComponent />} />
+            <Route path="/search" element={<SearchScreen />} />
             
           </>
         ) : (
@@ -103,7 +105,7 @@ const Routers = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/trending" element={<Trending />} />
             <Route path="/chat" element={<Chat />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:userId?" element={<Profile />} />
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/edit" element={<EditProfile />} />
             <Route path="/setting" element={<Settings />} />
@@ -113,6 +115,7 @@ const Routers = () => {
             <Route path="/share-profile" element={<ShareProfile />} />
             <Route path="/scan-and-share" element={<ScanAndShare />} />
             <Route path="/invite-connect" element={<InviteAndConnectComponent />} />
+            <Route path="/search" element={<SearchScreen />} />
           </>
         )}
       </Routes>

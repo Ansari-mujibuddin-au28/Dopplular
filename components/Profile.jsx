@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { getProfile, updateProfilePic } from '../redux/profilereducer';
-import { useNavigate } from 'react-router-native';
+import { useNavigate ,useParams} from 'react-router-native';
 import AppBar from './AppBar';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -11,17 +11,25 @@ import Octicons from '@expo/vector-icons/Octicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Entypo from '@expo/vector-icons/Entypo';
 import * as ImagePicker from 'expo-image-picker';
 
 const Profile = (props) => {
   const [activeTab, setActiveTab] = useState('Home');
   const [showPopup, setShowPopup] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const params = useParams(); 
+
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    props.getProfile(props.loginResponse?.result?.profileId);
+    if(params?.userId){
+      props.getProfile(params?.userId);
+    } else {
+      props.getProfile(props.loginResponse?.result?.profileId);
+    }
   }, []);
 
   const { username, followersCount, followingCount,profileImg,bio } = props.profile.result || {};
@@ -44,7 +52,11 @@ const Profile = (props) => {
   const handleImageUpload = () => {
     if (selectedImage) {
       props.updateProfilePic(selectedImage); 
+        if(params?.userId){
+      props.getProfile(params?.userId);
+    } else {
       props.getProfile(props.loginResponse?.result?.profileId);
+    }
       setShowPopup(false);
     }
   };
@@ -97,20 +109,28 @@ const Profile = (props) => {
 
   return (
     <>
-     <AppBar title="Profile" />
+     <AppBar title={"Profile"} />
       <View style={styles.topBar}>
-      <Text style={styles.topBarTitle}>Profile</Text>
-        <View style={styles.topBarButtons}>
-          <TouchableOpacity style={styles.iconButton}>
-          <AntDesign name="plussquareo" size={24} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-          <Feather name="bookmark" size={24} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigate('/setting')} style={styles.iconButton}>
-          <Feather name="settings" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
+      <Text style={styles.topBarTitle}>{params?.userId ? username :"Profile"}</Text>
+      {params?.userId ? 
+              <View style={styles.topBarButtons}>
+                <TouchableOpacity  style={styles.iconButton}>
+                  <Entypo name="dots-three-vertical" size={24} color="black" />
+                </TouchableOpacity>
+              </View>
+            :
+          <View style={styles.topBarButtons}>
+            <TouchableOpacity style={styles.iconButton}>
+            <AntDesign name="plussquareo" size={24} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton}>
+            <Feather name="bookmark" size={24} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity  onPress={() => navigate('/setting')} style={styles.iconButton}>
+            <Feather name="settings" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
+        }
       </View>
 
       <View style={styles.container}>
@@ -147,7 +167,18 @@ const Profile = (props) => {
             <Text style={styles.statLabel}>Followers</Text>
           </View>
         </View>
+        {params?.userId ?
+          <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 10 }}>
+          <TouchableOpacity style={styles.editButton}
+            >
+            <Text style={styles.editButtonText}>Follow</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.shareButton}>
+          <FontAwesome name="commenting-o" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
 
+        :
         <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 10 }}>
           <TouchableOpacity style={styles.editButton}
             onPress={() => navigate('/edit')}>
@@ -157,6 +188,7 @@ const Profile = (props) => {
             <MaterialCommunityIcons name="share-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
+        }
 
         <View style={styles.tabsContainer}>
           <TouchableOpacity

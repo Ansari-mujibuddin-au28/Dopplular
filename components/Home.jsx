@@ -3,6 +3,7 @@ import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions }
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AppBar from './AppBar';
+import { useNavigate } from 'react-router-native';
 
 const { width } = Dimensions.get('window');
 
@@ -52,6 +53,9 @@ const posts = [
 ];
 
 const HomeScreen = () => {
+    
+  const navigate = useNavigate();
+
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <View style={styles.userInfo}>
@@ -121,7 +125,9 @@ const HomeScreen = () => {
       <AppBar title="Home" />
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Doppular</Text>
+        <TouchableOpacity  onPress={() => navigate('/search')}>
         <Icon name="search" size={20} color="black" />
+        </TouchableOpacity>
       </View>
       
       <View style={styles.promoCard}>

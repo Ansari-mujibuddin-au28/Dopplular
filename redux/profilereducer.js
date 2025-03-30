@@ -1,6 +1,7 @@
 import apiClient from '../api/apiClient';
 
 const initialState = {
+  loading:false,
   profile: {},
   editNameResponse: '',
   editUserNameResponse: '',
@@ -9,6 +10,8 @@ const initialState = {
   sendRequestResponse: '',
   unFollowRequestResponse: '',
   unBlockProfileResponse: '',
+  getSuggestionsData:[],
+  getSearchData:[]
 };
 
 const GET_PROFILE = 'profile/GET_PROFILE';
@@ -19,6 +22,8 @@ const UPDATE_IMAGE = 'profile/UPDATE_IMAGE';
 const SEND_REQUEST = 'profile/SEND_REQUEST';
 const UNFOLLOW_REQUEST = 'profile/UNFOLLOW_REQUEST';
 const UNBLOCK_PROFILE = 'profile/UNBLOCK_PROFILE';
+const GET_SUGGESTIONS = 'profile/GET_SUGGESTIONS';
+const GET_SEARCH = 'profile/GET_SEARCH';
 
 export const getProfile = (targetProfileId) => async (dispatch) => {
   try {
@@ -132,6 +137,36 @@ export const unBlockProfile = (targetProfileId) => async (dispatch) => {
   }
 };
 
+export const getSuggestions = () => async (dispatch) => {
+  try {
+  
+    const response = await apiClient.get('https://doppular.vercel.app/api/profile/getSuggestions');
+    if (response) {
+      dispatch({
+        type: GET_SUGGESTIONS,
+        payload: response,
+      });
+    }
+  } catch (error) {
+    console.error('GET_SUGGESTIONS API Error:', error);
+  }
+};
+
+export const getSearch = (query) => async (dispatch) => {
+  try {
+    const response = await apiClient.post('https://doppular.vercel.app/api/search', { username: query });
+    console.log(response,"getsearch")
+    if (response) {
+      dispatch({
+        type: GET_SEARCH,
+        payload: response,
+      });
+    }
+  } catch (error) {
+    console.error('GET_SEARCH API Error:', error);
+  }
+};
+
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_PROFILE:{
@@ -153,6 +188,10 @@ const profileReducer = (state = initialState, action) => {
       return { ...state, unFollowRequestResponse: action.payload };
     case UNBLOCK_PROFILE:
       return { ...state, unBlockProfileResponse: action.payload };
+      case GET_SUGGESTIONS:
+        return { ...state, getSuggestionsData: action.payload };
+        case GET_SEARCH:
+          return { ...state, getSearchData: action.payload };
     default:
       return state;
   }

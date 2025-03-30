@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import { fetchUserChats, fetchMessages, sendMessage, createChat } from '../redux/chatReducer';
+import { getSuggestions } from '../redux/profilereducer';
 import io from 'socket.io-client';
 
 const socket = io('https://doppular.vercel.app');
@@ -13,6 +14,7 @@ const ChatScreen = ({ route, navigation,fetchUserChats, fetchMessages, sendMessa
   const [newMessage, setNewMessage] = useState('');
 
   useEffect(() => {
+    getSuggestions()
     fetchUserChats(loginResponse?.result?.profileId)
     socket.emit('saveUser', { loginProfileId: loginResponse?.result?.profileId, socket: socket.id });
     socket.on('onlineUsers', (users) => console.log('Online Users:', users));
@@ -69,13 +71,15 @@ const mapStateToProps = (state) => ({
   loginResponse: state.login?.loginResponseData || {},
   chats: state.chat?.chats || [],
   messages: state.chat?.messages || {},
+  getSuggestionsData:state.profile?.getSuggestionsData || []
 });
 
 const mapDispatchToProps = {
   fetchUserChats, 
   fetchMessages, 
   sendMessage, 
-  createChat 
+  createChat,
+  getSuggestions 
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen);
