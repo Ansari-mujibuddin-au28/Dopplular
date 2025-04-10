@@ -13,7 +13,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   transforms: [nonSerializableTransform], 
-  whitelist: ['splash', 'login', 'profile','signup','loginResponseData'], 
+  whitelist: ['splash', 'login', 'profile','signup','loginResponseData','chats'], 
   debug: true, 
 };
 

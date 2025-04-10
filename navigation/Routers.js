@@ -20,6 +20,7 @@ import ShareProfile from '../components/ShareProfile';
 import ScanAndShare from '../components/ScanAndShare';
 import InviteAndConnectComponent from '../components/InviteAndConnectComponent';
 import SearchScreen from '../components/SearchScreen';
+import ActiveChatView from '../components/ActiveChatView';
 
 
 const Routers = () => {
@@ -94,6 +95,7 @@ const Routers = () => {
             <Route path="/scan-and-share" element={<ScanAndShare />} />
             <Route path="/invite-connect" element={<InviteAndConnectComponent />} />
             <Route path="/search" element={<SearchScreen />} />
+            <Route path="/active-chat/:chatId?" element={<ActiveChatView />} />
             
           </>
         ) : (
@@ -116,6 +118,7 @@ const Routers = () => {
             <Route path="/scan-and-share" element={<ScanAndShare />} />
             <Route path="/invite-connect" element={<InviteAndConnectComponent />} />
             <Route path="/search" element={<SearchScreen />} />
+            <Route path="/active-chat/:chatId?" element={<ActiveChatView />} />
           </>
         )}
       </Routes>
