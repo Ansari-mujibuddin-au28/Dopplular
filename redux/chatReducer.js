@@ -17,7 +17,6 @@ const CREATE_CHAT = 'chat/CREATE_CHAT';
 export const fetchUserChats = (profileId) => async (dispatch) => {
   try {
     const response = await apiClient.get(`https://doppular.vercel.app/api/chat/getChats?profileId=${profileId}`);
-    console.log("fetchUserChats",response)
     dispatch({ type: GET_CHATS, payload: response });
   } catch (error) {
     console.error('Fetch Chats API Error:', error);
